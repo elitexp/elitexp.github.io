@@ -3,7 +3,7 @@
     <div class="light-rays-wrapper" v-if="isVisible">
       <ReactInVue :component="LightRays" :props="{
         raysOrigin: 'top-center',
-        raysColor: '#ffffff',
+        raysColor: '#00e5ff',
         raysSpeed: 1.2,
         lightSpread: 1.5,
         rayLength: 1.5,
@@ -65,7 +65,7 @@ export default {
       },
       {
         root: null,
-        rootMargin: '0px 0px -475px 0px', // Negative bottom margin to ensure 40% visibility from top
+        rootMargin: '0px 0px -60% 0px', // Negative bottom margin to ensure 40% visibility from top
         threshold: [0, 0.4, 1] // Multiple thresholds to track visibility changes
       }
     );

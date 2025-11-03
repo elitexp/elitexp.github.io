@@ -111,7 +111,7 @@ export default {
             {
               content: 'Masters in machine learning and  artificial intelligence.',
               title: 'M.Sc. Data Science & Computational Intelligence',
-              year: 'From 09.2023'
+              year: '2023-2025'
             },
             {
               content: 'Solid groundwork for my career in technology with distinction',

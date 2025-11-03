@@ -5,22 +5,8 @@
         </AnimateOnVisible>
 
         <div class="section-content">
-            <div class="container-fluid">
-                <div class="row d-flex flex-wrap align-items-center justify-content-center">
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 m-auto pb-4" style="cursor: pointer;"
-                        v-for="(post, index) in this.content.object.metadata.items" :key="index">
-                        <!-- <AnimateOnVisible name="bounce"> -->
-                        <ReactInVue :component="SpotlightCard" :inline="true" :props="{
-                            spotlightColor: 'rgba(0, 229, 255, 0.5)',
-                            className: 'skill-spotlight-card',
-                            imgSrc: getImgUrl(post.img),
-                            imgAlt: post.title,
-                            title: post.title,
-
-                        }" />
-                        <!-- </AnimateOnVisible> -->
-                    </div>
-                </div>
+            <div class="masonry-container">
+                <ReactInVue :component="Masonry" :inline="true" :props="masonryProps" />
             </div>
         </div>
     </section>
@@ -29,7 +15,7 @@
 <script>
 import Title from './Title.vue'
 import ReactInVue from './ReactInVue.vue'
-import SpotlightCard from './SpotlightCard.jsx'
+import Masonry from './Masonry.jsx'
 
 export default {
     name: 'Skills',
@@ -40,7 +26,33 @@ export default {
     props: ['content'],
     data() {
         return {
-            SpotlightCard
+            Masonry
+        }
+    },
+    computed: {
+        masonryItems() {
+            const items = this.content.object.metadata.items.map((post, index) => ({
+                id: `skill-${index}`,
+                imgSrc: this.getImgUrl(post.img),
+                imgAlt: post.title,
+                title: post.title
+            }));
+            console.log('masonryItems computed:', items);
+            return items;
+        },
+        masonryProps() {
+            return {
+                items: this.masonryItems,
+                ease: 'power3.out',
+                duration: 0.6,
+                stagger: 0.05,
+                animateFrom: 'bottom',
+                scaleOnHover: true,
+                hoverScale: 1.05,
+                blurToFocus: true,
+                colorShiftOnHover: false,
+                spotlightColor: 'rgba(0, 229, 255, 0.5)'
+            };
         }
     },
     methods: {
@@ -59,23 +71,26 @@ export default {
     padding: 40px 20px;
 }
 
+.section-content {
+    width: 100%;
+    max-width: 1400px;
+    margin: 40px auto 0;
+    padding: 0 20px;
+}
+
+.masonry-container {
+    width: 100%;
+    min-height: 400px;
+}
+
+.masonry-container>div {
+    width: 100% !important;
+}
+
 @media(min-width: #{map-get($breakpoints, medium)}) {
     .section-content {
         width: 90%;
-        margin: 0 auto;
+        padding: 0 40px;
     }
-}
-
-.row {
-    margin-left: -15px;
-    margin-right: -15px;
-}
-
-.col-6,
-.col-sm-4,
-.col-md-3,
-.col-lg-2 {
-    padding: 0 15px;
-    margin-bottom: 30px;
 }
 </style>
