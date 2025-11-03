@@ -10,7 +10,7 @@ export default {
   name: 'ReactInVue',
   props: {
     component: {
-      type: Object,
+      type: [Object, Function],
       required: true
     },
     props: {
@@ -66,8 +66,28 @@ export default {
   },
   methods: {
     renderReactComponent() {
+      // Handle both direct component functions and default exports
+      let component = this.component?.default || this.component;
+
+      // Additional check: if component is still an object, try to extract the function
+      if (typeof component === 'object' && component !== null) {
+        // Check for __esModule pattern
+        if (component.__esModule && component.default) {
+          component = component.default;
+        } else {
+          console.error('Invalid component type:', component);
+          return;
+        }
+      }
+
+      // Verify we have a valid component
+      if (typeof component !== 'function') {
+        console.error('Component is not a function:', typeof component, component);
+        return;
+      }
+
       const element = React.createElement(
-        this.component,
+        component,
         this.props
       );
 

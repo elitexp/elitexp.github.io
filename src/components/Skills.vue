@@ -6,12 +6,19 @@
 
         <div class="section-content">
             <div class="container-fluid">
-                <div class="row d-flex flex-wrap align-items-center">
-                    <div class="col-md-2 m-auto pb-4" v-for="(post, index) in this.content.object.metadata.items" :key="index">
-                        <AnimateOnVisible name="bounce">
-                            <img id="imgLogo" class="img-responsive mx-auto d-block" :src="getImgUrl(post.img)" :alt="post.title"/>
-                            <div id="divAlt" class="altCaption text-center">{{post.title}}</div>
-                        </AnimateOnVisible>
+                <div class="row d-flex flex-wrap align-items-center justify-content-center">
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 m-auto pb-4" style="cursor: pointer;"
+                        v-for="(post, index) in this.content.object.metadata.items" :key="index">
+                        <!-- <AnimateOnVisible name="bounce"> -->
+                        <ReactInVue :component="SpotlightCard" :inline="true" :props="{
+                            spotlightColor: 'rgba(0, 229, 255, 0.5)',
+                            className: 'skill-spotlight-card',
+                            imgSrc: getImgUrl(post.img),
+                            imgAlt: post.title,
+                            title: post.title,
+
+                        }" />
+                        <!-- </AnimateOnVisible> -->
                     </div>
                 </div>
             </div>
@@ -20,42 +27,55 @@
 </template>
 
 <script>
-    import Title from './Title.vue'
+import Title from './Title.vue'
+import ReactInVue from './ReactInVue.vue'
+import SpotlightCard from './SpotlightCard.jsx'
 
-    export default {
-        name: 'Skills',
-        components: {
-            Title,
+export default {
+    name: 'Skills',
+    components: {
+        Title,
+        ReactInVue
+    },
+    props: ['content'],
+    data() {
+        return {
+            SpotlightCard
+        }
+    },
+    methods: {
+        getImgUrl(img) {
+            return require('../assets/img/logo/' + img);
         },
-        props: ['content'],
-        methods: {
-            getImgUrl(img) {
-                return require('../assets/img/logo/'+img);
-            },
-        },
-    }
+    },
+}
 </script>
 
 <style scoped lang="scss">
-    @import '@/styles/constants.scss';
+@import '@/styles/constants.scss';
 
-    #skills {
-        background-color: lighten(map-get($colors, dark), 100%);
-    }
+#skills {
+    background-color: lighten(map-get($colors, dark), 100%);
+    padding: 40px 20px;
+}
 
-    @media(min-width: #{map-get($breakpoints, medium)}) {
-        .section-content {
-            width: 80%;
-            margin: 0 auto;
-        }
+@media(min-width: #{map-get($breakpoints, medium)}) {
+    .section-content {
+        width: 90%;
+        margin: 0 auto;
     }
+}
 
-    img{
-        max-width: 120px;
-    }
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
 
-    .altCaption{
-        color: map-get($colors, secondary);
-        margin-top: 1rem;
-    }
+.col-6,
+.col-sm-4,
+.col-md-3,
+.col-lg-2 {
+    padding: 0 15px;
+    margin-bottom: 30px;
+}
 </style>

@@ -1,5 +1,5 @@
 module.exports = {
-  transpileDependencies: ["framer-motion", "motion-dom"],
+  transpileDependencies: ["framer-motion", "motion-dom", "ogl"],
   configureWebpack: {
     module: {
       rules: [

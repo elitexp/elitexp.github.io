@@ -1,6 +1,6 @@
 <template>
-  <header class="header parallax">
-    <ReactInVue :component="SplashCursor" />
+  <header class="header parallax" ref="landingPage">
+    <ReactInVue v-if="isVisible" :component="SplashCursor" />
     <div class="name">
       <div class="wrapper-name">
 
@@ -43,7 +43,36 @@ export default {
   data() {
     return {
       SplashCursor,
-      DecryptedText
+      DecryptedText,
+      isVisible: true,
+      observer: null
+    }
+  },
+  mounted() {
+    // Create an intersection observer to detect when landing page is visible
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          this.isVisible = entry.isIntersecting;
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.4 // Trigger when at least 40% of the element is visible
+      }
+    );
+
+    // Start observing the landing page
+    if (this.$refs.landingPage) {
+      this.observer.observe(this.$refs.landingPage);
+    }
+  },
+  beforeDestroy() {
+    // Clean up observer when component is destroyed
+    if (this.observer && this.$refs.landingPage) {
+      this.observer.unobserve(this.$refs.landingPage);
+      this.observer.disconnect();
     }
   }
 };
